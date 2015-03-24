@@ -29,11 +29,11 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="OpenSprinkler Raspberry Pi"
+DESC="WaterBoy2.0"
 NAME=ospi.py
 DAEMON=/usr/bin/python
 DAEMON_ARGS="ospi.py"
-HOMEDIR=/root/OSPi/ # Edit if different on your Raspberry Pi
+HOMEDIR=/root/Waterboy2.0/OSPi/ # Edit if different on your Raspberry Pi
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 

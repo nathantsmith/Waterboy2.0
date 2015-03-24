@@ -1,6 +1,0 @@
-#!/bin/bash
-
-
-#reboot every 5 days
-
-sleep 432000 

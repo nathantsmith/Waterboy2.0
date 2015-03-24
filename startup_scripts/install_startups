@@ -9,9 +9,16 @@ cd /root
 
 svn co svn://www.drewthejames.com/branches/black_furnace_logger --username nathan --password npwd
 
-cd /root/black_furnace_logger/startup_scripts
+cd /root/Waterboy2.0/startup_scripts
 
 cp rc.local /etc/rc.local
+cp ospi /etc/init.d/
+
+cd /etc/init.d/ 
+
+update-rc.d ospi defaults
+
+cd
 
 if [ ! -f "/root/systemconfig.txt" ];
 then

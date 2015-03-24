@@ -11,6 +11,6 @@
 #
 # By default this script does nothing.
 
-/root/black_furnace_logger/startup_scripts/application &
+/root/Waterboy2.0/startup_scripts/startup.sh &
 
 exit 0
