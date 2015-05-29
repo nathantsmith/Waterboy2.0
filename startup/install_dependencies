@@ -1,0 +1,19 @@
+#!/bin/bash
+
+apt-get -y update
+apt-get -y upgrade
+
+apt-get -y install vim unzip curl psmisc usbmount dos2unix python python-pip
+
+pip install web.py
+
+cd /root/Waterboy2.0/startup_scripts
+
+cp .vimrc /root/
+cp rc.local /etc/rc.local
+cp ospi /etc/init.d/
+
+cd /etc/init.d/ 
+
+update-rc.d ospi defaults
+
