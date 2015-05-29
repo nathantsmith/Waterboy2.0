@@ -1,0 +1,107 @@
+from HTTPRequests import *
+import gv
+from ospi import *
+import ast
+
+###print gv.hub
+"""Conditions
+if vwc 1 or 2 < ? auto water for set duration
+if vwc 1 or 2 > ? shutoff valves for set duration
+if temp1 or temp2 < 32 shutoff everything
+"""
+
+if ((gv.sd['mm'])==1):
+    print "Running"
+    ###add watering duration option to the webpage
+    ###use gv.hubnames
+	
+    ltct = int(gv.sd['ltct'])
+    lwlt = int(gv.sd['lwlt'])
+    hwlt = int(gv.sd['hwlt'])
+    wd = int(gv.sd['wd'])
+	
+    wd = wd * 60 #converts minutes into seconds for the api
+	#hub example
+	#testhub = {}
+	
+    gv.hubnames = ast.literal_eval(gv.hubnames)
+	
+    runoncelist = [0] * (len((gv.hubnames[0])[2]))
+	
+    for sh in gv.hubnames:
+    	if (len(sh) != 7):
+        	print "No Data"
+	else:
+            try:
+                sh[3] = int(sh[3])
+            except ValueError:
+                sh[3] = 99999.9 
+            try:
+                sh[4] = int(sh[4])
+            except ValueError:
+                sh[4] = 99999.9
+            try:
+		sh[5] = int(sh[5])
+            except ValueError:
+                sh[5] = 99999.9
+            try:
+	        sh[6] = int(sh[6])
+            except ValueError:
+                sh[6] = 99999.9
+
+	    	if ((sh[5]) < ltct) or ((sh[6]) < ltct):
+    			print "Temperature is too low. Shutting down all watering."
+                        shutdown()
+		else:
+                    print "Temperature is ok. Continuing to water."
+                    if ((sh[3]) < lwlt) or ((sh[4]) < lwlt):
+                        print "Beginning Watering"
+		        valvecontrol = (sh[2])
+	    	        valvecontrol = map(int,valvecontrol)
+		    	#run once methodology
+	    		i = 0
+    			for x in valvecontrol:
+                            if (runoncelist[i] == 0):
+                                x = x * wd
+    	    			runoncelist[i] = x
+	    		    i = i + 1
+					
+					#valvecontrol.append(0)
+					#runonce(valvecontrol)
+			
+					#set station methodology
+					#valves=map(int,str((testhub[1])[2]))
+					#i=0
+					#while i<len(valves):
+						#if valves[i] == 1:
+							#setstation((i+1), 1, 60)
+					#   i = i + 1
+					#print valves
+			
+		    elif ((sh[3]) > hwlt) or ((sh[4]) > hwlt):
+		    	print "Stopping Watering"
+	    		valvecontrol = (sh[2])
+    			valvecontrol = map(int,valvecontrol)
+                        i=0
+		   	for x in valvecontrol:
+                            x = 0
+	    	            valvecontrol[i] = x
+    			i = i + 1
+                        valvecontrol.append(0)
+                        runonce(valvecontrol)
+					#while i<len(valves):
+					#    if valves[i] == 1:
+					#        setstation((i+1), 0, 0)
+					#    i = i + 1
+					#print valves
+		    else:
+	    		print "Everything is fine. No changes made."
+	runoncelist.append(0)
+	runonce(runoncelist)
+	#i = 0
+	#while (i < (len(runoncelist))-1):
+	#	listtorun = runoncelist[i] | runoncelist[i+1]
+	#	print listtorun
+	
+else:
+    print "Runnning in program mode"
